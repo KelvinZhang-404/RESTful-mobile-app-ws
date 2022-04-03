@@ -14,38 +14,27 @@ import com.kelvinappdev.app.ws.ui.model.response.ErrorMessage;
 
 @ControllerAdvice
 public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
-	
-	@ExceptionHandler(value = {Exception.class})
+
+	@ExceptionHandler(value = { Exception.class })
 	public ResponseEntity<Object> handleAnyExceptioin(Exception ex, WebRequest request) {
-		
+
 		String errorDesc = ex.getLocalizedMessage();
-		if(errorDesc == null) errorDesc = ex.toString();
+		if (errorDesc == null)
+			errorDesc = ex.toString();
 		ErrorMessage errorMessage = new ErrorMessage(new Date(), errorDesc);
-		
-		return new ResponseEntity<>(
-				errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+
+		return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
-	@ExceptionHandler(value = {NullPointerException.class})
-	public ResponseEntity<Object> handleNullPointerExceptioin(NullPointerException ex, WebRequest request) {
-		
+
+	@ExceptionHandler(value = { NullPointerException.class, UserServiceException.class })
+	public ResponseEntity<Object> handleSpecificExceptioin(Exception ex, WebRequest request) {
+
 		String errorDesc = ex.getLocalizedMessage();
-		if(errorDesc == null) errorDesc = ex.toString();
+		if (errorDesc == null)
+			errorDesc = ex.toString();
 		ErrorMessage errorMessage = new ErrorMessage(new Date(), errorDesc);
-		
-		return new ResponseEntity<>(
-				errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+
+		return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
-	@ExceptionHandler(value = {UserServiceException.class})
-	public ResponseEntity<Object> handleUserServiceExceptioin(UserServiceException ex, WebRequest request) {
-		
-		String errorDesc = ex.getLocalizedMessage();
-		if(errorDesc == null) errorDesc = ex.toString();
-		ErrorMessage errorMessage = new ErrorMessage(new Date(), errorDesc);
-		
-		return new ResponseEntity<>(
-				errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-	
+
 }
