@@ -14,8 +14,20 @@ import com.kelvinappdev.app.ws.ui.model.response.ErrorMessage;
 
 @ControllerAdvice
 public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
+	
 	@ExceptionHandler(value = {Exception.class})
 	public ResponseEntity<Object> handleAnyExceptioin(Exception ex, WebRequest request) {
+		
+		String errorDesc = ex.getLocalizedMessage();
+		if(errorDesc == null) errorDesc = ex.toString();
+		ErrorMessage errorMessage = new ErrorMessage(new Date(), errorDesc);
+		
+		return new ResponseEntity<>(
+				errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@ExceptionHandler(value = {NullPointerException.class})
+	public ResponseEntity<Object> handleNullPointerExceptioin(NullPointerException ex, WebRequest request) {
 		
 		String errorDesc = ex.getLocalizedMessage();
 		if(errorDesc == null) errorDesc = ex.toString();
