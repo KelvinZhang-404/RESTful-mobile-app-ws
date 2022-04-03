@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kelvinappdev.app.ws.exceptions.UserServiceException;
 import com.kelvinappdev.app.ws.ui.model.request.UpdateUserDetailsRequestModel;
 import com.kelvinappdev.app.ws.ui.model.request.UserDetailsRequestModel;
 import com.kelvinappdev.app.ws.ui.model.response.UserRest;
@@ -44,8 +45,9 @@ public class UserController {
 					MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<UserRest> getuser(@PathVariable String userId)
 	{
-		String firstName = null;
-		int firstNameLength = firstName.length();
+//		String firstName = null;
+//		int firstNameLength = firstName.length();
+		if(true) throw new UserServiceException("A user service exception is thrown");
 		
 		if(users.containsKey(userId)){
 			return new ResponseEntity<>(users.get(userId), HttpStatus.OK);
